@@ -13,3 +13,6 @@ dotnet tool install --global dotnet-ef
 dotnet ef database update
 dotnet run
 ```
+
+## 访问项目
+浏览器输入 `https://localhost:5001/` 进行访问
