@@ -350,7 +350,7 @@ namespace E_commerceWeb.Controllers
             order.OrderStatus = 0;
             order.ShipmentsStatus = 0;
             int orderId = Orderrepo.Add(order);
-            if (GoodsLists == null)
+            if (GoodsLists.Count()==0)
             {
                 foreach (var item in ShoppingCartrepo.SelectAll())
                 {
