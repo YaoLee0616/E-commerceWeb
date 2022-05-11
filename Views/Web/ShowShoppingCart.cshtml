@@ -1,0 +1,26 @@
+﻿@model IEnumerable<ShoppingCart>
+
+<h2 style="text-align:center">购物车</h2>
+
+<table class="table table-striped" id="example">
+    <thead>
+        <tr>
+            <th scope="col">商品名</th>
+            <th scope="col">数量</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ShoppingCart cart in Model)
+        {
+            <tr>
+                <td>@cart.GoodsName</td>
+                <td>@cart.Count</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+<form>
+    <button class="btn btn-primary" asp-action="SettleAccounts">结算</button>
+    <button class="btn btn-secondary" asp-action="Index">返回</button>
+</form>

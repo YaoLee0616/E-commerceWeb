@@ -1,0 +1,96 @@
+﻿@model PaginatedList<Goods>
+
+<div class="row">
+    <form class="row col-6">
+        <label class="col-md-3 col-form-label">请选择种类</label>
+        <div class="col-md-7">
+            <select class="form-select" name="searchString" asp-items="@ViewBag.Types">
+                <option value="-1">全部</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary mb-3" asp-action="Index">筛选</button>
+        </div>
+    </form>
+
+    <div class="row col-md-6  justify-content-end">
+        <form class="col-md-auto">
+            <button type="submit" class="btn btn-primary mb-3 " asp-action="CreateTestData">生成测试数据</button>
+        </form>
+        <div class="col-md-1"></div>
+        <form class="col-md-auto">
+            <button type="submit" class="btn btn-primary mb-3 position-relative bg-warning" asp-action="ShowShoppingCart">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </svg>
+                去购物车结算
+                <span id="shoppingCartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    @ViewBag.ShoppingCartSum
+                </span>
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<div class="row row-cols-5">
+    @foreach (Goods goods in Model)
+    {
+        <form>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><span>@goods.GoodsName</span></h5>
+                        <p class="card-text">商品种类:<span>@goods.GoodsType.TypeName</span></p>
+                        <p class="card-text">商品零售价:<span>@goods.GoodsRetailPrice</span></p>
+                        <input type="hidden" name="id" id="id" value="@goods.GoodsId" />
+                        <button type="button" class="btn btn-primary bg-info" data-bs-toggle="modal" data-bs-target="#addSuccessfully" onclick="PassId(@goods.GoodsId)">加入购物车</button>
+
+                        <div class="modal fade" id="addSuccessfully" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        是否确认加入购物车？
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" asp-action="AddShoppingCart"> 是</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">否</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+</div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewBag.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    上一页
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewBag.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    下一页
+</a>
+
+<script>
+    function PassId(id) {
+        document.getElementById("id").value = id;
+    }
+</script>

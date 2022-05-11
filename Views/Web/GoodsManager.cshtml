@@ -1,0 +1,86 @@
+﻿@model PaginatedList<Goods>
+
+<h2 style="text-align:center">商品管理</h2>
+<form class="row">
+    <button class="btn btn-info col-auto mb-3" asp-action="AddGoods">添加</button>
+    <div class="col-4">
+        <p>
+            请输入商品名: <input type="text" name="SearchString" value="@ViewBag.CurrentFilter" />
+            <button type="submit" class="btn btn-primary" asp-action="GoodsManager"> 筛选</button>
+        </p>
+    </div>
+</form>
+<table class="table table-striped" id="example">
+    <thead>
+        <tr>
+            <th scope="col"><a asp-action="GoodsManager" asp-route-sortOrder="@ViewBag.GoodsIdSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">商品编号</a></th>
+            <th scope="col"><a asp-action="GoodsManager" asp-route-sortOrder="@ViewBag.GoodsNameSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">商品名</a></th>
+            <th scope="col"><a asp-action="GoodsManager" asp-route-sortOrder="@ViewBag.TypeIdSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">商品类别</a></th>
+            <th scope="col"><a asp-action="GoodsManager" asp-route-sortOrder="@ViewBag.GoodsPurchasePriceSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">商品采购价</a></th>
+            <th scope="col"><a asp-action="GoodsManager" asp-route-sortOrder="@ViewBag.GoodsRetailPriceSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">商品零售价</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Goods goods in Model)
+        {
+            <form>
+            <tr>
+                <th scope="row">@goods.GoodsId</th>
+                <td>@goods.GoodsName</td>
+                <td>@goods.GoodsType.TypeName</td>
+                <td>@goods.GoodsPurchasePrice</td>
+                <td>@goods.GoodsRetailPrice</td>
+                <td class="col-md-2 align-items-center">
+                    <input type="hidden" id="id" name="id" value="@goods.GoodsId" />
+                    <button class="btn btn-primary btn-sm" asp-action="UpdateGoods">修改</button>
+                    <button type="button" class="btn btn-primary btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#isDelete" onclick="PassId(@goods.GoodsId)">删除</button>
+                    <!-- Modal 删除提示 -->
+                <div class="modal fade" id="isDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    是否确认删除？
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" asp-action="DeleteGoods"> 是</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">否</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </form>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="GoodsManager"
+   asp-route-sortOrder="@ViewBag.CurrentSort"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewBag.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    上一页
+</a>
+<a asp-action="GoodsManager"
+   asp-route-sortOrder="@ViewBag.CurrentSort"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewBag.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    下一页
+</a>
+
+<script>
+    function PassId(id) {
+        document.getElementById("id").value = id;
+    }
+</script>

@@ -1,0 +1,110 @@
+﻿@model PaginatedList<Order>
+
+<h2 style="text-align:center">订单管理</h2>
+<form class="row">
+    <button class="btn btn-info col-auto mb-3" asp-action="AddOrder">添加</button>
+    <div class="col-4">
+        <p>
+            请输入客户名: <input type="text" name="SearchString" value="@ViewBag.CurrentFilter" />
+            <button type="submit" class="btn btn-primary" asp-action="OrderManager"> 筛选</button>
+        </p>
+    </div>
+</form>
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <form>
+            <th scope="col" ><a asp-action="OrderManager" asp-route-sortOrder="@ViewBag.OrderIdSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">订单编号</a></th>
+            <th scope="col"><a asp-action="OrderManager" asp-route-sortOrder="@ViewBag.CustomerNameSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">客户名</a></th>
+            <th scope="col">客户地址</th>
+            <th scope="col">订单状态</th>
+            <th scope="col">发货状态</th>
+            <th scope="col">商品列表</th>
+            <th scope="col">操作</th>
+            </form>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Order order in Model)
+        {
+            <form>
+            <tr>
+                <th scope="row">@order.OrderId</th>
+                <td>@order.CustomerName</td>
+                <td>@order.CustomerAddress</td>
+                @if (order.OrderStatus == 0)
+                {
+                    <td>未付款</td>
+                }
+                else
+                {
+                    <td>已付款</td>
+                }
+                @if (order.ShipmentsStatus == 0)
+                {
+                    <td>未发货</td>
+                }
+                else
+                {
+                    <td>已发货</td>
+                }
+
+                <td><a asp-action="ShowGoodsLists" asp-route-id="@order.OrderId">点击查看</a></td>
+                <td class="col-md-2 align-items-center">
+                    <input type="hidden" value="@order.OrderId" id="id" name="id"/>
+                    <button class="btn btn-primary btn-sm" asp-action="UpdateOrder">修改</button>
+                    <button type="button" class="btn btn-primary btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#isDelete" onclick="PassId(@order.OrderId)">删除</button>
+
+                       <!-- Modal 删除提示 -->
+                <div class="modal fade" id="isDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    是否确认删除？
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" asp-action="DeleteOrder"> 是</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">否</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            </form>
+        }
+
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="OrderManager"
+   asp-route-sortOrder="@ViewBag.CurrentSort"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewBag.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    上一页
+</a>
+<a asp-action="GoodsManager"
+   asp-route-sortOrder="@ViewBag.CurrentSort"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewBag.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    下一页
+</a>
+
+<script>
+    function PassId(id) {
+        document.getElementById("id").value = id;
+    }
+</script>

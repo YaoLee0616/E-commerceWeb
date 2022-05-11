@@ -1,0 +1,27 @@
+﻿@model IEnumerable<GoodsList>
+
+<h2 style="text-align:center">商品列表</h2>
+
+<table class="table table-striped" id="example">
+    <thead>
+        <tr>
+            <th scope="col">列表编号</th>
+            <th scope="col">商品编号</th>
+            <th scope="col">商品数量</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (GoodsList list in Model)
+        {
+            <tr>
+                <th scope="row">@list.ListId</th>
+                <td>@list.GoodsId</td>
+                <td>@list.GoodsCount</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form>
+     <button class="btn btn-secondary" asp-action="OrderManager">返回</button>
+</form>

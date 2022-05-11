@@ -1,0 +1,116 @@
+﻿@model PaginatedList<E_commerceWeb.Models.Type>
+
+<h2 style="text-align:center">类别管理</h2>
+
+<form class="row">
+
+    <button class="btn btn-info col-auto mb-3" asp-action="AddType">添加</button>
+
+    <div class="col-4">
+        <p>
+            请输入类别名: <input type="text" name="SearchString" value="@ViewBag.CurrentFilter" />
+            <button type="submit" class="btn btn-primary" asp-action="TypeManager"> 筛选</button>
+        </p>
+    </div>
+
+</form>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col"><a asp-action="TypeManager" asp-route-sortOrder="@ViewBag.TypeIdSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">类别编号</a></th>
+            <th scope="col">类别名</th>
+            <th scope="col">类别描述</th>
+            <th scope="col">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (E_commerceWeb.Models.Type type in Model)
+        {
+            <form>
+            <tr>
+                <th scope="row">@type.TypeId</th>
+                <td>@type.TypeName</td>
+                <td>@type.TypeDescription</td>
+                <td class="col-md-2 align-items-center">
+                    <input type="hidden" name="id" value="@type.TypeId" id="id">
+                    <button class="btn btn-primary btn-sm" asp-action="UpdateType">修改</button>
+                    <button type ="button" class="btn-primary btn-danger btn btn-sm" onclick="isDelete(@type.Goods.Count(),@type.TypeId)">删除</button>
+
+                    <!--删除模态框-->
+                <div class="modal fade" id="isDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    是否确认删除？
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" asp-action="DeleteType"> 是</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">否</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--强制删除模态框-->
+                <div class="modal fade" id="isForceDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" onshow="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    该类别下有商品存在，如果删除该类别，该类别下的商品也会一并删除，是否强制删除？
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger" asp-action="DeleteType"> 强制删除</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">否</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            </form>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="TypeManager"
+   asp-route-sortOrder="@ViewBag.CurrentSort"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewBag.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    上一页
+</a>
+<a asp-action="TypeManager"
+   asp-route-sortOrder="@ViewBag.CurrentSort"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewBag.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    下一页
+</a>
+<script>
+
+    function isDelete(count,id){
+        document.getElementById("id").value = id;
+        if(count>0){
+            $("#isForceDelete").modal("show")
+        }
+        else{
+            $("#isDelete").modal("show")
+        }
+    }
+
+</script>

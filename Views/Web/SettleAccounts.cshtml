@@ -1,0 +1,15 @@
+﻿@model Order
+<h2 style="text-align:center">结算</h2>
+<form>
+<div class="input-group mb-3">
+    <span class="input-group-text" id="basic-addon2">客户名:</span>
+    <input type="text" class="form-control" aria-describedby="basic-addon2" asp-for="CustomerName">
+</div>
+<div class="input-group mb-3">
+    <span class="input-group-text" id="basic-addon3">客户地址</span>
+    <input type="text" class="form-control" aria-describedby="basic-addon3" asp-for="CustomerAddress">
+</div>
+
+      <button class="btn btn-primary" asp-action="SettleAccounts" formmethod="post">确认</button>
+  <button class="btn btn-secondary" asp-action="ShowShoppingCart">返回</button>
+</form>

@@ -1,0 +1,42 @@
+﻿@model E_commerceWeb.Models.Type
+
+
+    @if (@Model != null)
+    {
+        <h2 style="text-align:center">修改类别</h2>
+        <form>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">类别编号:</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon1" asp-for="TypeId" readonly="readonly">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">类别名:</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon2" asp-for="TypeName">
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">类别描述:</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon3" asp-for="TypeDescription">
+        </div>
+            <button class="btn btn-primary" asp-action="UpdateType" formmethod="post">修改</button>
+            <button class="btn btn-secondary" asp-action="TypeManager">返回</button>
+        </form>
+    }
+
+    else
+    {
+        <h2 style="text-align:center">添加类别</h2>
+        <form>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">类别名:</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon2" asp-for="TypeName">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">类别描述:</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon3" asp-for="TypeDescription">
+        </div>
+            <button class="btn btn-primary" asp-action="AddType" formmethod="post">添加</button>
+            <button class="btn btn-secondary" asp-action="TypeManager">返回</button>
+        </form>
+    }
+

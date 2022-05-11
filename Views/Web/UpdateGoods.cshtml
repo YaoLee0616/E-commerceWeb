@@ -1,0 +1,59 @@
+﻿@model Goods
+
+@if (@Model != null)
+{
+    <h2 style="text-align:center">修改商品</h2>
+    <form>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">商品编号:</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon1" asp-for="GoodsId" readonly="readonly">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">商品名:</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon2" asp-for="GoodsName">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">商品类别:</span>
+            <select type="text" class="form-select" aria-describedby="basic-addon3" asp-items="@ViewBag.Types" asp-for="TypeId">
+            </select>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon4">商品采购价:</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon4" asp-for="GoodsPurchasePrice">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon4">商品零售价:</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon4" asp-for="GoodsRetailPrice">
+        </div>
+        
+            <button class="btn btn-primary" asp-action="UpdateGoods" formmethod="post">修改</button>
+            <button class="btn btn-secondary" asp-action="GoodsManager">返回</button>
+        </form>
+        }
+
+        else
+        {
+        <h2 style="text-align:center">添加商品</h2>
+        <form>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">商品名:</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon2" asp-for="GoodsName">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">商品类别:</span>
+                <select type="text" class="form-select" aria-describedby="basic-addon3" asp-items="@ViewBag.Types" asp-for="TypeId">
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon4">商品采购价:</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon4" asp-for="GoodsPurchasePrice">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon4">商品零售价:</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon4" asp-for="GoodsRetailPrice">
+            </div>
+        
+            <button class="btn btn-primary" asp-action="AddGoods" formmethod="post">添加</button>
+            <button class="btn btn-secondary" asp-action="GoodsManager">返回</button>
+        </form>
+        }

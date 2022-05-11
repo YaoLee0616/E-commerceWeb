@@ -1,0 +1,40 @@
+﻿@model IEnumerable<GoodsList>
+<h2 style="text-align:center">添加商品列表</h2>
+<form>
+
+
+    <div class="input-group mb-3">
+
+        <span class="input-group-text" id="basic-addon3">商品名:</span>
+        <select type="text" class="form-control" aria-describedby="basic-addon3" name="GoodsId" asp-items="@ViewBag.Goods">
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon3">商品数量:</span>
+        <input type="number" class="form-control" aria-describedby="basic-addon3" name="GoodsCount">
+
+    </div>
+
+    <table class="table table-striped">
+        @if (Model != null)
+        {
+            <tr>
+                <th>商品编号</th>
+                <th>商品数量</th>
+            </tr>
+               @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.GoodsId</td>
+                <td>@item.GoodsCount</td>
+            </tr>
+        }
+        }
+        
+     
+    </table>
+
+    <button class="btn btn-primary" asp-action="AddGoodsList" formmethod="post">添加商品</button>
+    <button class="btn btn-primary" asp-action="SettleAccounts">去结算</button>
+    <button class="btn btn-secondary" asp-action="OrderManager">返回</button>
+</form>
